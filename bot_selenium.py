@@ -14,8 +14,6 @@ driver.get("https://lapalabradeldia.com")
 button = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[2]/div[3]/div/div/div[2]/div[1]/button")))
 button.click()
 
-
-
 words = []
 
 def add_words():
@@ -38,10 +36,9 @@ def type_word(word):
     actions = ActionChains(driver)
     for c in word:
         actions.send_keys(c)
-    time.sleep(1)
+    time.sleep(2)
     actions.perform()
     driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
-    time.sleep(1)
 
 def check_win(colors, guessed):
     if colors.count("green") == 5:
