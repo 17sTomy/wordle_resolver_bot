@@ -86,12 +86,12 @@ def start_game():
             x = z.find_element(By.CLASS_NAME, "react-card-back")
             j = x.find_element(By.CLASS_NAME, "MuiBox-root")
             color = j.get_attribute("class").split(" ")[2]
-            if color == "mui-style-19klofl":
+            if color == "mui-style-19klofl" or color == "mui-style-16nufq8":
                 color = "gray"
-            elif color == "mui-style-1s62ug5":
+            elif color == "mui-style-1s62ug5" or color == "mui-style-1o5x3dn":
                 color = "yellow"
-            else:
-                color = "green"
+            elif color == "mui-style-bn1qqj" or color == "mui-style-1nx7b4a":
+                color= "green"
             colors.append(color)
 
         guessed = check_win(colors, guessed)

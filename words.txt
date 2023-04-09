@@ -16689,7 +16689,6 @@ doble
 doble
 doblo
 doblo
-dobro
 docil
 docta
 docto
@@ -17533,7 +17532,6 @@ forra
 forra
 forre
 forre
-forro
 forro
 forte
 forum
