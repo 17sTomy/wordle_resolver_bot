@@ -126,7 +126,6 @@ def start_game():
         if not error:
             guessed = check_win(colors, guessed)
             words = filter_words(colors, word, words, guessed_letters)
-            print(guessed_letters)
             chances -= 1
         else:
             delete_word(word)
