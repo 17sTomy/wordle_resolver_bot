@@ -31,18 +31,11 @@ def add_words():
         file.close() 
 
 def choose_random_word(array):
-    """ Añade las palabras a una lista """
+    """ Elige una palabra random """
     return random.choice(array)
 
-def type_word(word):
-    actions = ActionChains(driver)
-    for c in word:
-        actions.send_keys(c)
-    time.sleep(2)
-    actions.perform()
-    driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
-
 def check_win(colors, guessed):
+    """ Verifica si el usuario adivinó la palabra """
     if colors.count("green") == 5:
         guessed = True
         print("GANASTE!😃")
@@ -50,6 +43,7 @@ def check_win(colors, guessed):
     return guessed
 
 def filter_words(colors, word, words):
+    """ Filtra la lista de palabras según diferentes condiciones """
     for i, character in enumerate(word):
         # Filtra las palabras que contienen las letras correctas en la misma posición.
         if colors[i] == "green":
@@ -64,6 +58,15 @@ def filter_words(colors, word, words):
             words = list(filter(lambda x: character in x and x[i] != character, words))
 
     return words
+
+def type_word(word):
+    """ Escribe las palabras en la web """
+    actions = ActionChains(driver)
+    for c in word:
+        actions.send_keys(c)
+    time.sleep(2)
+    actions.perform()
+    driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
 
 def start_game():
     chances = 6
