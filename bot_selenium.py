@@ -11,7 +11,7 @@ import random
 driver = webdriver.Chrome()
 driver.get("https://lapalabradeldia.com")
 
-button = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[2]/div[3]/div/div/div[2]/div[1]/button")))
+button = WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[2]/div[3]/div/div/div[2]/div[1]/button")))
 button.click()
 
 words = []
@@ -42,16 +42,18 @@ def check_win(colors, guessed):
 
     return guessed
 
-def filter_words(colors, word, words):
+def filter_words(colors, word, words, guessed_letters):
     """ Filtra la lista de palabras según diferentes condiciones """
     for i, character in enumerate(word):
         # Filtra las palabras que contienen las letras correctas en la misma posición.
         if colors[i] == "green":
+            guessed_letters[i] = character
             words = list(filter(lambda x: x[i] == character, words))
 
         # Elimina las palabras que tengan letras que no estén en la palabra secreta.
         elif colors[i] == "gray":
-            words = list(filter(lambda x: character not in x, words))
+            if character not in guessed_letters:
+                words = list(filter(lambda x: character not in x, words))
 
         # Elimina las palabras que no tengan letras que están en la palabra secreta y que estén en diferente posición.
         elif colors[i] == "yellow":
@@ -63,20 +65,37 @@ def type_word(word):
     """ Escribe las palabras en la web """
     actions = ActionChains(driver)
     for c in word:
-        actions.send_keys(c)
+        if c == "ñ":
+            teclado = driver.find_element(By.XPATH, '//*[@id="keyboard"]/div[2]/button[10]')
+            teclado.click()
+        else:
+            actions.send_keys(c)
     time.sleep(2)
     actions.perform()
     driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ENTER)
+
+def delete_word(word):
+    """ Elimina la palabra """
+    actions = ActionChains(driver)
+    for c in word:
+        actions.send_keys(Keys.BACKSPACE)
+    time.sleep(2)
+    actions.perform()
 
 def start_game():
     chances = 6
     guessed = False
     words = add_words()
+    guessed_letters = ["", "", "", "", ""]
+    best_words_to_start = ["salen", "secan", "secar", "sedal", "sedar", "laser", "renal", "nacer", "naden", "cesar", "cenar", "celar", "celas", "cenas", "canes", "cases", "murio", "turia"]
     i = 0
     while chances > 0 and not guessed:
         colors = []
         print(f"Palabras restantes: {len(words)} - Intentos restantes: {chances}")
-        word = choose_random_word(words)
+        if chances == 6:
+            word = choose_random_word(best_words_to_start)
+        else: 
+            word = choose_random_word(words)
         type_word(word)
         # tablero
         board = driver.find_element(By.ID, "board")
@@ -86,6 +105,7 @@ def start_game():
         palabra = rows[i].find_elements(By.CLASS_NAME, "react-card-flip")
         i += 1
         # color de la letra
+        error = False
         for letra in palabra:
             z = letra.find_element(By.CLASS_NAME, "react-card-flipper")
             x = z.find_element(By.CLASS_NAME, "react-card-back")
@@ -96,12 +116,21 @@ def start_game():
             elif color == "mui-style-1s62ug5" or color == "mui-style-1o5x3dn":
                 color = "yellow"
             elif color == "mui-style-bn1qqj" or color == "mui-style-1nx7b4a":
-                color= "green"
+                color = "green"
+            else:
+                error = True
+                break
+
             colors.append(color)
 
-        guessed = check_win(colors, guessed)
-        words = filter_words(colors, word, words)
-        chances -= 1
+        if not error:
+            guessed = check_win(colors, guessed)
+            words = filter_words(colors, word, words, guessed_letters)
+            print(guessed_letters)
+            chances -= 1
+        else:
+            delete_word(word)
+            words.remove(word)
 
     if not guessed: 
         print("PERDISTE!😭")

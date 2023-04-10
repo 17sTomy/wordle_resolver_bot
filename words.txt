@@ -15034,8 +15034,6 @@ brida
 brida
 bride
 bride
-brido
-brido
 briol
 brios
 brisa
@@ -19169,7 +19167,6 @@ lateo
 lates
 latex
 latia
-latid
 latin
 latio
 latir
@@ -19411,7 +19408,6 @@ liria
 lirio
 liron
 lisad
-lisan
 lisar
 lisas
 lisas
@@ -22694,7 +22690,6 @@ rilas
 rilas
 rilen
 riles
-rimad
 riman
 rimar
 rimas

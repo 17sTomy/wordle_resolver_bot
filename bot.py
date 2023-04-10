@@ -49,11 +49,15 @@ def start_game():
     chances = 6
     guessed = False
     words = add_words()
+    best_words_to_start = ["salen", "secan", "secar", "sedal", "sedar", "laser", "renal", "nacer", "naden", "cesar", "cenar", "celar", "celas", "cenas", "canes", "cases", "murio", "turia", "judia"]
     secret_word = choose_random_word(words)
     print(f"Secret word: {secret_word.upper()}\n")
     while chances > 0 and not guessed:
         print(f"Palabras restantes: {len(words)} - Intentos restantes: {chances}")
-        word = choose_random_word(words)
+        if chances == 6:
+            word = choose_random_word(best_words_to_start)
+        else:
+            word = choose_random_word(words)
         print(f"Palabra elegida: {word.upper()}\n")  
         guessed = check_win(secret_word, word, guessed)
         words = filter_words(secret_word, word, words)
