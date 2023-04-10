@@ -17,6 +17,7 @@ button.click()
 words = []
 
 def add_words():
+    """ Añade las palabras a una lista """
     try:
         file = open("words.txt", "r", encoding="utf-8")
     except IOError:
@@ -30,6 +31,7 @@ def add_words():
         file.close() 
 
 def choose_random_word(array):
+    """ Añade las palabras a una lista """
     return random.choice(array)
 
 def type_word(word):

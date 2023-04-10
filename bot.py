@@ -3,6 +3,7 @@ import random
 words = []
 
 def add_words():
+    """ Añade las palabras a una lista """
     try:
         file = open("words.txt", "r", encoding="utf-8")
     except IOError:
@@ -16,9 +17,11 @@ def add_words():
         file.close() 
 
 def choose_random_word(array):
+    """ Elige una palabra random """
     return random.choice(array)
 
 def check_win(secret_word, word, guessed):
+    """ Verifica si el usuario adivinó la palabra """
     if word == secret_word:
         guessed = True
         print("GANASTE!😃")
@@ -26,6 +29,7 @@ def check_win(secret_word, word, guessed):
     return guessed
 
 def filter_words(secret_word, word, words):
+    """ Filtra la lista de palabras según diferentes condiciones """
     for i, character in enumerate(word):
         # Filtra las palabras que contienen las letras correctas en la misma posición.
         if character == secret_word[i]:
